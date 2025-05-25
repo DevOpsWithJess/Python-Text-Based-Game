@@ -1,0 +1,144 @@
+#########################################################
+#Jessica Johnson                                        #
+#SNHU IT 140 Intro to Scripting                         #
+#Project 2 Text Based Game                              #
+#Game Title: Abducted by Earthlings                     #
+#June 21st, 2024                                        #
+#########################################################
+
+##Objective of the code is to create a text based adventure game. The game will take you through eight different
+#   rooms and you will need to collect 6 items while going to each room. Type go north, go east, go west, go south,
+#   grab flashlight, grab big foot track, grab wrench, grab shooting star, grab coffee, grab test tubes, exit, quit,
+#   or show status. Anything else entered should return an Invalid entry statement and to try again.
+##  In order to win you must collect all 6 items and then battle the scientist. You win if you have all 6 items and you
+#   lose if you haven't collected all the items yet.
+#  Use the Game Map for an easier walkthrough.
+
+#Display welcome message
+def display_intro():
+    print('\n-----Welcome to Abducted by Earthlings-----')
+    print('\nThe year is 2024. You are an interstellar traveler from the Alpha Centauri Star System.')
+    print('Your space ship crash landed onto a primitive planet named Earth.')
+    print('You wake up and realize you are no longer in your space ship, but in an observation room inside Area 51.')
+    print('All you want to do is find your ship and return home.')
+    print('You overhear Earth scientists talking about your ship in another room.')
+    print('But you also overhear the scientists talking about making YOU their next experiment!')
+    print('\nYou devise a plan to escape...')
+
+    print('\nEscape Plan:\n\tCollect 6 items located throughout area 51')
+    print('\tFind and defeat the Scientist')
+    print('\tFly Home')
+
+    print('\tBEWARE of the Scientists. They are not your friends.\n')
+
+
+#create game instructions
+def display_instructions():
+
+    print('\n---Game Play Instructions---\n\tHow to Move from room to room:')
+    print('\t\tType: Go South, Go North, Go East, or Go West')
+    print('\t\tHint: capitalization does not matter\n')
+    print('\tHow to collect an item:')
+    print('\t\tType: Grab "item name"')
+    print('\t\tHint: to grab the wrench type- grab wrench')
+    print('\t\tHint: capitalization does not matter\n')
+    print('\nCollect 6 items and defeat the Scientist to win the game!')
+    print('You must have all 6 items inorder to defeat the Scientist.')
+    print("\nWin the game by collecting all 6 items!\n")
+    print('***Type Show Status and reveal your current location and current inventory***')
+    print('***Type Exit or Quit to end the game***')
+    print('***Type Go East, Go West, Go North, or Go South to move from room to room***')
+    print('***Type Grab Wrench, Grab Flashlight, Grab Coffee, and so on to collect items in each room***')
+    print('\nGood Luck!')
+    print('_______________________________________________________________________________________________')
+
+
+#Change value of current_room based on users input(move)
+def move_between_rooms(current_room, move, rooms):
+    current_room = rooms[current_room][move]
+    return current_room
+
+
+#grab an item, add it to the inventoy, and delete from the rooms list
+def grab_item(current_room, rooms, inventory):
+    inventory.append(rooms[current_room]['Item'])
+    del rooms[current_room]['Item']
+
+
+#Display game intro and instructions to player
+display_intro()
+display_instructions()
+
+
+#create main function that determines what to do based off of the users input
+def main():
+        #create dictionary that assigns a key and value in each room
+        #this will define the room names, item name/locations, and the direction to each room
+        rooms = {
+            'Observation Room': {'East': 'Reverse Engineering Lab'},
+            'Reverse Engineering Lab': {'North': 'Dimensional Portal', 'East': 'Operating Bay',
+                                        'South': 'Sasquatch Habitat', 'Item': 'Wrench', 'West': 'Observation Room'},
+            'Sasquatch Habitat': {'East': 'Intercontinental Under Ground Tunnel',
+                                  'North': 'Reverse Engineering Lab',
+                                  'Item': 'Big Foot Track'},
+            'Intercontinental Under Ground Tunnel': {'West': 'Sasquatch Habitat', 'Item': 'Flashlight'},
+            'Operating Bay': {'North': 'Supply Closet', 'West': 'Reverse Engineering Lab', 'Item': 'Test Tubes'},
+            'Supply Closet': {'South': 'Operating Bay'},#Scientist is here
+            'Dimensional Portal': {'East': 'Break Room', 'South': 'Reverse Engineering Lab', 'Item': 'Shooting Star'},
+            'Break Room': {'West': 'Dimensional Portal', 'Item': 'Coffee'}
+        }
+        #create a holding place for your items
+        inventory = []
+        current_room = 'Observation Room'
+
+        while True:
+            #if player enters room with scientist but has all 6 items/Win
+            if current_room == 'Supply Closet':
+                if len(inventory) == 6:
+                    print("\nYou collected all 6 items and found the Scientist!")
+                    print("You Won, Congratulations!!!")
+                    print('Good luck on your interstellar travels home!')
+                    print(('---Maybe avoid Area 51 next time you visit Earth---'))
+                    break
+                #if play enters room with scientist but doesnt have all 6 items/Defeat
+                else:
+                    print("\nUh Oh, The Scientist!!!")
+                    print("You didn't have enough items to defeat the Scientist, You are captured!")
+                    print("You Lose, better luck next time!")
+                    break
+
+            #display current room to player
+            print('\nYou are in the ' + current_room)
+
+           #display current inventory to play, empty and not
+            if not inventory:
+                print('Your inventory is currently empty')
+            else:
+                print("Your inventory contains:", inventory)
+
+            #if player is not in supply closet
+            if current_room != 'Supply Closet' and 'Item' in rooms[current_room].keys():
+                print('\nYou found the {}.'.format(rooms[current_room]['Item']))
+
+            #users input and what to do with it
+            move = input('What would you like to do?\nType direction to go or item to grab:').title().split()
+
+            if move[0] == 'Go' and move[1] in rooms[current_room].keys():
+                current_room = move_between_rooms(current_room, move[1], rooms)
+
+            elif 'Item' in rooms[current_room]:
+               if " ".join(move) == "Grab " + rooms[current_room]['Item']:
+                  print("You collected the {}".format(rooms[current_room]['Item']))
+                  grab_item(current_room, rooms, inventory)
+                  continue
+            elif move[0] == 'Show' and move[1] == 'Status':
+                print('You are in the ' + current_room)
+
+            elif move == ['Quit'] or move == ['Exit']:
+                print('You have ended the game. Thank you, Goodbye.')
+                break
+
+            else:
+                print('\nTry again, invalid input!\n')
+
+main()
