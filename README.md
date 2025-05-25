@@ -24,5 +24,5 @@ Abducted by Earthlings was the first working program I created from scratch in a
 - Include character selection
 
 ## Thank You
-Thank you for checking out my first Python project!
-I hope you enjoy playing it as much as I enjoed building it!
+Thank you for checking out my first Python project.
+I hope you enjoy playing it as much as I enjoyed building it!
