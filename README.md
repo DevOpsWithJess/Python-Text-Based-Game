@@ -1,4 +1,4 @@
-# Python-Text-Based-Game — Abducted by Earthlings
+# Python-Text-Based-Game - Abducted by Earthlings
 
 ### Author: Jessica Johnson
 ### June 14, 2024
