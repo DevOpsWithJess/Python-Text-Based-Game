@@ -10,9 +10,9 @@ Abducted by Earthlings is a Python text-based adventure game built to demonstrat
 This project represents my first full program written from scratch and demonstrates my foundational understanding of Python and interactive program design.
 
 ## Technologies Used
-Python
-PyCharm
-Lucid Chart
+- Python
+- PyCharm
+- Lucid Chart
 
 ## Main Concepts
 - Dictionaries created to store room connections
